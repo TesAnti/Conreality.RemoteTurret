@@ -13,7 +13,7 @@ float Servo180::lerp(float a, float b, float t)
 {
     return a+(b-a)*t;
 }
-void Servo180::turnLeft(int speed)
+void Servo180::turnCCW(int speed)
 {
     
     if(_angleF>1200)_angleF-=speed;
@@ -21,7 +21,7 @@ void Servo180::turnLeft(int speed)
     
 }
 
-void Servo180::turnRight(int speed)
+void Servo180::turnCW(int speed)
 {
     
     if(_angleF<1700)_angleF+=speed;
@@ -35,4 +35,9 @@ void Servo180::tick()
     _angleFreal=lerp(_angleFreal,_angleF,0.1);
     _servo->writeMicroseconds(_channel,(int)_angleFreal);
     
+}
+
+void Servo180::brake()
+{
+
 }

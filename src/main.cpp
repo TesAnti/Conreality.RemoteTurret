@@ -1,8 +1,8 @@
 #include <RHReliableDatagram.h>
 #include <RH_NRF24.h>
 #include <SPI.h>
-#include "servo360ada.h"
-#include "servo180.h"
+#include "motors\servo360ada.h"
+#include "motors\servo180.h"
 
 #include "receiver.h"
 
@@ -66,19 +66,19 @@ void loop()
   int valueY = map(abs(AXIS_Y_VALUE), 0, 89, 0, 10);
 
   if (AXIS_X_DIRECTION < 0)
-    servo->turnRight(valueX); //turn left
+    servo->turnCW(valueX); //turn left
 
   if (AXIS_X_DIRECTION > 0)
-    servo->turnLeft(valueX); //turn right
+    servo->turnCCW(valueX); //turn right
 
   if (AXIS_X_DIRECTION == 0) //brake
     servo->brake();          //brake using Active or Passive braking
 
   if (AXIS_Y_DIRECTION > 0)
-    servoVertical->turnRight(valueY); //turn left
+    servoVertical->turnCW(valueY); //turn left
 
   if (AXIS_Y_DIRECTION < 0)
-    servoVertical->turnLeft(valueY); //turn right
+    servoVertical->turnCCW(valueY); //turn right
 
   #if DEBUG_JOYSTICK == 1
   if(__debug_timeout<millis())

@@ -1,11 +1,12 @@
 
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
+#include "motor.h"
 
 #ifndef SERVO180_H
 #define SERVO180_H
 
-class Servo180
+class Servo180:public Motor
 {
 private:
     
@@ -17,9 +18,10 @@ private:
     float lerp(float a, float b, float t);
 public:
     Servo180(Adafruit_PWMServoDriver servo,int channel);
-    void turnLeft(int speed);
-    void turnRight(int speed);
-    void tick();
+    virtual void turnCCW(int speed);
+    virtual void turnCW(int speed);
+    virtual void tick();
+    virtual void brake();
 };
 
 #endif

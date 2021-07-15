@@ -7,13 +7,16 @@ Servo360Ada::Servo360Ada(Adafruit_PWMServoDriver servo,int channel, int midPoint
     _servo=&servo;
     
 }
-
-void Servo360Ada::turnLeft(int speed)
+void Servo360Ada::tick()
+{
+    
+}
+void Servo360Ada::turnCCW(int speed)
 {
     _servo->writeMicroseconds(_channel,_midPoint-speed);
 }
 
-void Servo360Ada::turnRight(int speed)
+void Servo360Ada::turnCW(int speed)
 {
     _servo->writeMicroseconds(_channel,_midPoint+speed);
 }
