@@ -21,7 +21,10 @@ void Servo360Ada::turnCW(int speed)
     _servo->writeMicroseconds(_channel,_midPoint+speed);
 }
 
-
+void Servo360Ada::turn(int target)
+{
+    _servo->writeMicroseconds(_channel,target);
+}
 
 void Servo360Ada::brake()
 {

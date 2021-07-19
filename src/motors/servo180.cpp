@@ -30,6 +30,13 @@ void Servo180::turnCW(int speed)
     
 }
 
+void Servo180::turn(int target)
+{
+   
+    _angleF=target;
+    
+}
+
 void Servo180::tick()
 {
     _angleFreal=lerp(_angleFreal,_angleF,0.1);
@@ -39,5 +46,5 @@ void Servo180::tick()
 
 void Servo180::brake()
 {
-
+    _angleF=_angleFreal;
 }
