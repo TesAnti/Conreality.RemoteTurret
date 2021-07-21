@@ -1,8 +1,11 @@
 #include "channels_manager.h"
 #include "config.h"
-#include "receivers\nrf24receiver.h"
-ChannelsManager::ChannelsManager()
+#include "nrf24receiver.h"
+ChannelsManager::ChannelsManager(InferiorConfig *inferiorConfig, Receiver *receiver)
 {
+    _receiver = receiver;
+    _inferiorConfig = inferiorConfig;
+    
     for (int32_t i = 0; i < CM_MAX_CHANNELS; i++)
     {
         _filterCounter[i] = 0;
@@ -21,9 +24,6 @@ ChannelsManager::ChannelsManager()
         }
     }
 
-#if USE_NRF24_RCV == 1
-    _receiver = new nrf24Receiver();
-#endif
     _receiver->init();
 }
 
@@ -66,28 +66,30 @@ void ChannelsManager::update()
         }
     }
 
-#if CHANNELS_DEBUG == 1
-    if (__debug_timeout < millis())
+    if (_inferiorConfig->channelsDebug)
     {
-        Serial.println("-----------------------------");
-        for (int i = 0; i < channelsCount; i++)
+        if (__debug_timeout < millis())
         {
-
-            Serial.print("C");
-            Serial.print(i + 1);
-            Serial.print(": ");
-            for (int f = 0; f < CM_MAX_FILTERS_PER_CHANNEL; f++)
+            Serial.println("-----------------------------");
+            for (int i = 0; i < channelsCount; i++)
             {
-                char s[25];
-                sprintf(s, "%03d", (int)_filteredValues[i][f]);
-                Serial.print("[");
-                Serial.print(s);
-                Serial.print("]\t");
+
+                Serial.print("C");
+                Serial.print(i + 1);
+                Serial.print(": ");
+                for (int f = 0; f < CM_MAX_FILTERS_PER_CHANNEL; f++)
+                {
+                    char s[25];
+                    sprintf(s, "%03d", (int)_filteredValues[i][f]);
+                    Serial.print("[");
+                    Serial.print(s);
+                    Serial.print("]\t");
+                }
+                Serial.print("raw:");
+                Serial.println(buf[i]);
             }
-            Serial.print("raw:");
-            Serial.println(buf[i]);
+            Serial.println(_inferiorConfig->channelsDebugInterval);
+            __debug_timeout = millis() + _inferiorConfig->channelsDebugInterval;
         }
-        __debug_timeout = millis() + CHANNELS_DEBUG_INTERVAL;
     }
-#endif
 }

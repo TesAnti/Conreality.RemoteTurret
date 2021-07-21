@@ -10,6 +10,7 @@
 
 class nrf24Receiver:public Receiver{
     public:
+        nrf24Receiver(int ce,int ss,int address);
         virtual void init();
         virtual void update();
         virtual void waitForConnection();
@@ -19,6 +20,9 @@ class nrf24Receiver:public Receiver{
         RHReliableDatagram* _manager;
         uint8_t* _buf;
         bool _connected=false;
+        int _ce;
+        int _ss;
+        int _address;
 };
 
 #endif

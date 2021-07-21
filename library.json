@@ -1,0 +1,14 @@
+{
+    "name": "Conreality.Inferior",
+    "version": "1.0.0",
+    "description": "",
+    "keywords": "remote control, arduino, motor control",
+    "license": "unlicense",
+    "dependencies": {
+        "mikem/RadioHead": "1.113",
+        "adafruit/Adafruit PWM Servo Driver Library": "2.4.0",
+        "nrf24/RF24": "1.4.0"
+    },
+    "frameworks": "*",
+    "platforms": "*"
+}

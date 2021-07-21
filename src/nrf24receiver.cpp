@@ -2,11 +2,20 @@
 #include "config.h"
 #include "Arduino.h"
 
+
+nrf24Receiver::nrf24Receiver(int ce,int ss,int address)
+{
+    _ce=ce;
+    _ss=ss;
+    _address=address;
+}
+
+
 void nrf24Receiver::init()
 {
-    _driver = new RH_NRF24(NRF24_RCV_CE_PIN, NRF24_RCV_SS_PIN);
+    _driver = new RH_NRF24(_ce, _ss);
 
-    _manager = new RHReliableDatagram(*_driver, NRF24_RCV_ADDRESS);
+    _manager = new RHReliableDatagram(*_driver, _address);
     _buf = new uint8_t[RH_NRF24_MAX_MESSAGE_LEN];
 
     if(_manager->init())
