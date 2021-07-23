@@ -7,7 +7,7 @@
 #include "app_config.h"
 
 #define CM_MAX_CHANNELS 9
-#define CM_MAX_FILTERS_PER_CHANNEL 3
+#define CM_MAX_VIRTUAL_CHANNELS 21
 
 
 

@@ -8,17 +8,19 @@ class FilterHandler
 public:
     virtual FilterHandler *SetNext(FilterHandler *handler) = 0;
     virtual int32_t Handle(int32_t request) = 0;
+    
 };
 
 class AbstractFilterHandler : public FilterHandler
 {
 
 private:
-    FilterHandler *_next_handler;
+    FilterHandler *_next_handler=0;
 
 public:
     FilterHandler *SetNext(FilterHandler *handler);
     int32_t Handle(int32_t request) ;
+    int32_t Next(int32_t value);
 };
 
 
@@ -64,11 +66,26 @@ private:
     float _t;
     float _a;
     bool _isInitialized=false;
+    uint32_t _nextCorrection=0;
 public:
     LerpFilter(float t);
     int32_t Handle(int32_t request);
     
 };
 
+
+class TriggerFilter:public AbstractFilterHandler
+{
+    private:
+        int _state=0;
+        int32_t _value=1;
+    public:
+        int32_t Handle(int32_t request);
+};
+
+class EmptyFilter:public AbstractFilterHandler
+{
+
+};
 
 #endif //h

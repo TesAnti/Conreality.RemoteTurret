@@ -10,8 +10,8 @@ class ChannelsManager
 public:
     ChannelsManager(InferiorConfig *inferiorConfig, Receiver* receiver);
     void update();
-    void AddFilter(int32_t channel, AbstractFilterHandler *filterChain);
-
+    void AddFilter(int16_t sourceChannel, int16_t virtualChannel, FilterHandler *filterChain);
+    int32_t GetVirtual(int virtualChannel);
 private:
     InferiorConfig *_inferiorConfig;
     uint8_t *_buttons;
@@ -20,9 +20,11 @@ private:
     uint8_t _axis0;
     uint8_t _axis1;
     uint32_t __debug_timeout = 0;
-    uint16_t _filterCounter[CM_MAX_CHANNELS];
-    int32_t _filteredValues[CM_MAX_CHANNELS][CM_MAX_FILTERS_PER_CHANNEL];
-    AbstractFilterHandler *_filters[CM_MAX_CHANNELS * CM_MAX_FILTERS_PER_CHANNEL];
+    
+    int32_t _filteredValues[CM_MAX_VIRTUAL_CHANNELS];
+    int16_t _filterInputs[CM_MAX_VIRTUAL_CHANNELS];
+    FilterHandler *_filters[CM_MAX_VIRTUAL_CHANNELS];
+    
 };
 
 #endif

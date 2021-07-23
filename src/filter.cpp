@@ -8,13 +8,19 @@ FilterHandler *AbstractFilterHandler::SetNext(FilterHandler *handler)
 
 int32_t AbstractFilterHandler::Handle(int32_t request) 
 {
+    
+    return Next(request);
+}
+int32_t AbstractFilterHandler::Next(int32_t value) 
+{
     if (_next_handler != 0)
     {
-        return _next_handler->Handle(request);
+        return _next_handler->Handle(value);
     }
 
-    return request;
+    return value;
 }
+
 
 LimitFilter::LimitFilter(int32_t min,int32_t max)
 {
@@ -25,7 +31,8 @@ LimitFilter::LimitFilter(int32_t min,int32_t max)
 int32_t LimitFilter::Handle(int32_t request){
     if(request>_max)request=_max;
     if(request<_min)request=_min;
-    return request;
+
+    return Next(request);
 }
 
 
@@ -39,7 +46,7 @@ DeadzoneFilter::DeadzoneFilter(int32_t min,int32_t max,int32_t defaultValue)
 int32_t DeadzoneFilter::Handle(int32_t request){
     if(request>_max)request=_defaultValue;
     if(request<_min)request=_defaultValue;
-    return request;
+    return Next(request);
 }
 
 MapFilter::MapFilter(int32_t minFrom,int32_t maxFrom,int32_t minTo,int32_t maxTo)
@@ -53,7 +60,7 @@ MapFilter::MapFilter(int32_t minFrom,int32_t maxFrom,int32_t minTo,int32_t maxTo
 
 int32_t MapFilter::Handle(int32_t request){
     
-    return map(request,_minFrom,_maxFrom,_minTo,_maxTo);
+    return Next(map(request,_minFrom,_maxFrom,_minTo,_maxTo));
 }
 
 LerpFilter::LerpFilter(float t)
@@ -68,6 +75,35 @@ int32_t LerpFilter::Handle(int32_t request){
         _a=(float)request;
         _isInitialized=true;
     }
-    _a=_a+(request-_a)*_t;
-    return (int32_t)_a;
+    if(_nextCorrection<millis())
+    {
+        _a=_a+(request-_a)*_t;
+        _nextCorrection=millis()+1;
+    }
+    
+    return Next((int32_t)_a);
+}
+
+int32_t TriggerFilter::Handle(int32_t request){
+    if(_state==0&&request==0)
+    {
+        _state=1;
+        _value=0;
+    }
+    if(_state==1&&request!=0)
+    {
+        _state=2;
+    }
+    if(_state==2&&request==0)
+    {
+        _value=1;
+        _state=3;
+    }
+    if(_state==3&&request!=0)
+    {
+        _state=0;
+    }
+    
+    return Next(_value);
+
 }
