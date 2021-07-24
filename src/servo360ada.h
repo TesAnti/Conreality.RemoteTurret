@@ -4,9 +4,9 @@
 #define SERVO360ADA_H
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
-#include "motor.h"
 
-class Servo360Ada : public Motor
+
+class Servo360Ada 
 {
 public:
     Servo360Ada(Adafruit_PWMServoDriver servo, int channel, int midPoint);

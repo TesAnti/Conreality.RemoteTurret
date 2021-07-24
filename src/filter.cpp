@@ -44,8 +44,8 @@ DeadzoneFilter::DeadzoneFilter(int32_t min,int32_t max,int32_t defaultValue)
 }
 
 int32_t DeadzoneFilter::Handle(int32_t request){
-    if(request>_max)request=_defaultValue;
-    if(request<_min)request=_defaultValue;
+    if(request<_max&&request>_min)request=_defaultValue;
+    
     return Next(request);
 }
 

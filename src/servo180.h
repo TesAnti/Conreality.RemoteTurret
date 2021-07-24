@@ -4,9 +4,9 @@
 #define SERVO180_H
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
-#include "motor.h"
 
-class Servo180 : public Motor
+
+class Servo180 
 {
 private:
     Adafruit_PWMServoDriver *_servo;

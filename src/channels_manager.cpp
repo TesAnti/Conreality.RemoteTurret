@@ -62,7 +62,9 @@ void ChannelsManager::update()
                 sprintf(s, "%03d", (int)_filteredValues[i]);
                 Serial.print(s);
                 Serial.print("\t");
-                Serial.print("raw:");
+                Serial.print("raw(");
+                Serial.print(_filterInputs[i]);
+                Serial.print("):");
                 Serial.println(buf[_filterInputs[i]]);
             }
             
